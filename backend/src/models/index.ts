@@ -23,6 +23,11 @@ import ServiceTokenData, { IServiceTokenData } from './serviceTokenData';
 import APIKeyData, { IAPIKeyData } from './apiKeyData';
 import LoginSRPDetail, { ILoginSRPDetail } from './loginSRPDetail';
 
+// entity product
+import Entity, { IEntity } from './entity';
+import EntityType, { IEntityType } from './entityType';
+import EntitySecret, { IEntitySecret } from './entitySecret';
+
 export {
 	BackupPrivateKey,
 	IBackupPrivateKey,
@@ -71,5 +76,11 @@ export {
 	APIKeyData,
 	IAPIKeyData,
 	LoginSRPDetail,
-	ILoginSRPDetail
+	ILoginSRPDetail,
+	Entity,
+	IEntity,
+	EntityType,
+	IEntityType,
+	EntitySecret,
+	IEntitySecret
 };
