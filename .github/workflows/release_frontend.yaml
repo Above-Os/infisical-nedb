@@ -23,5 +23,5 @@ jobs:
               uses: docker/build-push-action@v3
               with:
                   push: true
-                  tags: aboveos/infisical-frontend:${{ github.event.inputs.tags }}
+                  tags: bytetrade/infisical-frontend:${{ github.event.inputs.tags }}
                   context: "{{defaultContext}}:frontend"
