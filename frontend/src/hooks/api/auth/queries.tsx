@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { apiRequest } from '@app/config/request';
 import { setAuthToken } from '@app/reactQuery';
 
+// import terminusToken from '@app/pages/api/auth/CheckTerminusToken';
 import {
   GetAuthTokenAPI,
   SendMfaTokenDTO,
@@ -37,8 +38,9 @@ export const useVerifyMfaToken = () => {
 // Refresh token is set as cookie when logged in
 // Using that we fetch the auth bearer token needed for auth calls
 const fetchAuthToken = async () => {
-  const { data } = await apiRequest.post<GetAuthTokenAPI>('/api/v1/auth/token', undefined, {
-    withCredentials: true
+//  const { data } = await apiRequest.post<GetAuthTokenAPI>('/api/v1/auth/token', undefined, {
+  const { data } = await apiRequest.post<GetAuthTokenAPI>('/tapr/auth/token', undefined, {
+      withCredentials: true
   });
 
   return data;

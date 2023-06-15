@@ -8,9 +8,8 @@ import { useRouter } from 'next/router';
 import ListBox from '@app/components/basic/Listbox';
 // import LoginStep from '@app/components/login/LoginStep';
 // import MFAStep from '@app/components/login/MFAStep';
-import { isLoggedIn, setAuthToken } from '@app/reactQuery';
+import { isLoggedIn } from '@app/reactQuery';
 
-import terminusToken from './api/auth/CheckTerminusToken';
 import getWorkspaces from './api/workspace/getWorkspaces';
 
 export default function Login() {
@@ -26,13 +25,6 @@ export default function Login() {
     localStorage.setItem('lang', to);
   };
 
-  const getAuthTokenFromTerminus = async () => {
-    const token = await terminusToken();
-    if (token) {
-      setAuthToken(token);
-    }
-  };
-
   useEffect(() => {
     // TODO(akhilmhdh): workspace will be controlled by a workspace context
     const redirectToDashboard = async () => {
@@ -46,8 +38,6 @@ export default function Login() {
       }
     };
     
-    getAuthTokenFromTerminus();
-
     if (isLoggedIn()) {
       redirectToDashboard();
     }else{
@@ -56,7 +46,7 @@ export default function Login() {
       const hostTokenizer = host.split(".")
       hostTokenizer[0]="auth"
       
-      router.push(`https://${hostTokenizer.join(".")}`);
+      router.push(`https://${hostTokenizer.join(".")}/fa2=false&rd=https%3A%2F%2F${host}%2F&rm=GET`);
     }
   }, []);
 
