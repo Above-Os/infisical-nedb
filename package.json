@@ -19,6 +19,7 @@
     ]
   },
   "devDependencies": {
+    "@types/jsrp": "^0.2.4",
     "eslint": "^8.29.0",
     "husky": "^8.0.2"
   }
