@@ -24,4 +24,4 @@ jobs:
               with:
                   push: true
                   tags: bytetrade/infisical-frontend:${{ github.event.inputs.tags }}
-                  context: "{{defaultContext}}:frontend"
+                  context: "frontend"
