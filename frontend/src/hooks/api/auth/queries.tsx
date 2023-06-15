@@ -263,8 +263,9 @@ export const useChangePassword = () => {
 // Refresh token is set as cookie when logged in
 // Using that we fetch the auth bearer token needed for auth calls
 const fetchAuthToken = async () => {
-  const { data } = await apiRequest.post<GetAuthTokenAPI>("/api/v1/auth/token", undefined, {
-    withCredentials: true
+//  const { data } = await apiRequest.post<GetAuthTokenAPI>('/api/v1/auth/token', undefined, {
+  const { data } = await apiRequest.post<GetAuthTokenAPI>("/tapr/auth/token", undefined, {
+      withCredentials: true
   });
 
   return data;
