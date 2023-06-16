@@ -46,7 +46,7 @@ export default function Login() {
       const hostTokenizer = host.split(".")
       hostTokenizer[0]="auth"
       
-      router.push(`https://${hostTokenizer.join(".")}/fa2=false&rd=https%3A%2F%2F${host}%2F&rm=GET`);
+      router.push(`https://${hostTokenizer.join(".")}/?fa2=false&rd=https%3A%2F%2F${host}%2F&rm=GET`);
     }
   }, []);
 
