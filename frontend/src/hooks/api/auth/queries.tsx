@@ -267,10 +267,11 @@ export const useChangePassword = () => {
 // Using that we fetch the auth bearer token needed for auth calls
 const fetchPrivateKey = (secretKey?:string) => {
   return async () => {
-    const { data } = await apiRequest.post<VerifyMfaTokenRes>("/tapr/privatekey", undefined, {
-        withCredentials: true
-    });
     if (secretKey !== undefined ){
+      const { data } = await apiRequest.post<VerifyMfaTokenRes>("/tapr/privatekey", undefined, {
+        withCredentials: true
+      });
+
       // decrypt private key and save
       const privateKey = await KeyService.decryptPrivateKey({
         encryptionVersion: data.encryptionVersion,  // must be 1
@@ -292,11 +293,11 @@ const fetchPrivateKey = (secretKey?:string) => {
         privateKey
       });
         
-    }else{
-      throw new Error("Invalid secret key, cannot descrypt private key");
+      return data;
     }
-
-    return data;
+    
+    throw new Error("Invalid secret key, cannot descrypt private key");
+    
   };
 };
 
