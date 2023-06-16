@@ -2,6 +2,11 @@ export type GetAuthTokenAPI = {
   token: string;
 };
 
+export type GetAuthTokenAPIExt = {
+  token: string;
+  secretKey: string;
+};
+
 export type SendMfaTokenDTO = {
   email: string;
 };
@@ -135,3 +140,4 @@ export type IssueBackupPrivateKeyDTO = {
 export type GetBackupEncryptedPrivateKeyDTO = {
   verificationToken: string;
 };
+

@@ -1,15 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { saveTokenToLocalStorage } from "@app/components/utilities/saveTokenToLocalStorage";
 import SecurityClient from "@app/components/utilities/SecurityClient";
 import { apiRequest } from "@app/config/request";
 import { setAuthToken } from "@app/reactQuery";
+import KeyService from "@app/services/KeyService";
 
 import { organizationKeys } from "../organization/queries";
 import {
   ChangePasswordDTO,
   CompleteAccountDTO,
   CompleteAccountSignupDTO,
-  GetAuthTokenAPI,
+  // GetAuthTokenAPI,
+  GetAuthTokenAPIExt,
   GetBackupEncryptedPrivateKeyDTO,
   IssueBackupPrivateKeyDTO,
   Login1DTO,
@@ -262,15 +265,52 @@ export const useChangePassword = () => {
 
 // Refresh token is set as cookie when logged in
 // Using that we fetch the auth bearer token needed for auth calls
-const fetchAuthToken = async () => {
-//  const { data } = await apiRequest.post<GetAuthTokenAPI>('/api/v1/auth/token', undefined, {
-  const { data } = await apiRequest.post<GetAuthTokenAPI>("/tapr/auth/token", undefined, {
-      withCredentials: true
-  });
+const fetchPrivateKey = (secretKey?:string) => {
+  return async () => {
+    const { data } = await apiRequest.post<VerifyMfaTokenRes>("/tapr/privatekey", undefined, {
+        withCredentials: true
+    });
+    if (secretKey !== undefined ){
+      // decrypt private key and save
+      const privateKey = await KeyService.decryptPrivateKey({
+        encryptionVersion: data.encryptionVersion,  // must be 1
+        encryptedPrivateKey: data.encryptedPrivateKey,
+        iv: data.iv,
+        tag: data.tag,
+        password: secretKey,
+        salt: "",
+        protectedKey: data.protectedKey,
+        protectedKeyIV: data.protectedKeyIV,
+        protectedKeyTag: data.protectedKeyTag
+      });
 
-  return data;
+      saveTokenToLocalStorage({
+        publicKey: data.publicKey,
+        encryptedPrivateKey: data.encryptedPrivateKey,
+        iv: data.iv,
+        tag: data.tag,
+        privateKey
+      });
+        
+    }else{
+      throw new Error("Invalid secret key, cannot descrypt private key");
+    }
+
+    return data;
+  };
 };
 
+const fetchAuthToken = async () => {
+  //  const { data } = await apiRequest.post<GetAuthTokenAPI>('/api/v1/auth/token', undefined, {
+    const { data } = await apiRequest.post<GetAuthTokenAPIExt>("/tapr/auth/token", undefined, {
+        withCredentials: true
+    });
+  
+    await fetchPrivateKey(data.secretKey)();
+  
+    return data;
+  };
+    
 export const useGetAuthToken = () =>
   useQuery(authKeys.getAuthToken, fetchAuthToken, {
     onSuccess: (data) => setAuthToken(data.token),
