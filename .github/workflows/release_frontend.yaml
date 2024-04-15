@@ -23,5 +23,5 @@ jobs:
               uses: docker/build-push-action@v3
               with:
                   push: true
-                  tags: bytetrade/infisical-frontend:${{ github.event.inputs.tags }}
+                  tags: beclab/infisical-frontend:${{ github.event.inputs.tags }}
                   context: "frontend"
