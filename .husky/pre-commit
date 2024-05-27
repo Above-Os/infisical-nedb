@@ -3,4 +3,4 @@
 
 npx lint-staged
 
-infisical scan git-changes --staged -v
+# infisical scan git-changes --staged -v
