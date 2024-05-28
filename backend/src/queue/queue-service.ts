@@ -139,14 +139,17 @@ export const queueServiceFactory = (redisUrl: string) => {
       throw new Error(`${name} queue is already initialized`);
     }
 
+    const skipVersionCheck = true;
     queueContainer[name] = new Queue<TQueueJobTypes[T]["payload"], void, TQueueJobTypes[T]["name"]>(name as string, {
       ...queueSettings,
-      connection
+      connection,
+      skipVersionCheck
     });
 
     workerContainer[name] = new Worker<TQueueJobTypes[T]["payload"], void, TQueueJobTypes[T]["name"]>(name, jobFn, {
       ...queueSettings,
-      connection
+      connection,
+      skipVersionCheck
     });
   };
 
